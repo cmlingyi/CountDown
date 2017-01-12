@@ -14,17 +14,18 @@
     </div>
 
     <script>
+        var date = new Date().getTime() + 12000000000;
         var countDown = new Countdown();
-        countDown.on('time1', new Date().getTime() + 12000000000, function (time) {
+        countDown.on('time1', date, function (time) {
             document.getElementsByClassName('time_d')[0].textContent = time.d + ':' + time.h + ':' + time.m + ':' + time.s;
         })
-        .on('time2', new Date().getTime() + 12000000000, function (time) {
+        .on('time2', date, function (time) {
             document.getElementsByClassName('time_h')[0].textContent = time.d + ':' + time.h + ':' + time.m + ':' + time.s;
         })
-        .on('time3', new Date().getTime() + 12000000000, function (time) {
+        .on('time3', date, function (time) {
             document.getElementsByClassName('time_m')[0].textContent = time.d + ':' + time.h + ':' + time.m + ':' + time.s;
         })
-        .on('time4', new Date().getTime() + 12000000000, function (time) {
+        .on('time4', date, function (time) {
             document.getElementsByClassName('time_s')[0].textContent = time.d + ':' + time.h + ':' + time.m + ':' + time.s;
         });
         countDown.format('time2', 'h');

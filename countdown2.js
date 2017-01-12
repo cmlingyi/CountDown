@@ -1,4 +1,5 @@
-;(function () {
+;
+(function () {
     function Countdown(delay) {
         this.delay = delay || 1000
         this.list = {}
@@ -11,13 +12,10 @@
     }
 
     var _formatTime = function (ms, name) {
-        if (name == 'time2'){
-            var a = 1;
-        }
         var s = ms / 1000;
         var tag = 4;
         var ts = s,
-            dd = 0, 
+            dd = 0,
             hh = 0,
             mm = 0,
             ss = 0;
@@ -60,7 +58,7 @@
             total: s
         };
     }
-   
+
     Countdown.prototype.on = function (name, endtime, cb, delta) {
         this.list[name] = {
             name: name,
@@ -89,11 +87,13 @@
         clearTimeout(this.timer);
         this.timer = setTimeout(() => {
             for (var key in this.list) {
-                var obj = this.list[key]
-                obj.times++;
-                if (obj.times % obj.delta == 0) {
-                    var diff = this.diffTime(obj.endtime, key);
-                    obj.cb.call(this, diff);
+                if (this.list.hasOwnProperty(key)) {
+                    var obj = this.list[key]
+                    obj.times++;
+                    if (obj.times % obj.delta == 0) {
+                        var diff = this.diffTime(obj.endtime, key);
+                        obj.cb.call(this, diff);
+                    }
                 }
             }
             this.update();
@@ -101,12 +101,14 @@
     }
 
     Countdown.prototype.format = function (name, tag) {
-        if (this.list[name]) {
+        if (arguments.length === 1) {
+            this.list[Object.keys(this.list)[0]].tag = arguments[0];
+        } else {
             this.list[name].tag = tag;
         }
         return this;
     }
-    
+
     Countdown.prototype.diffTime = function (target, name) {
         var now = new Date().getTime();
         if (now < target) {
