@@ -1,5 +1,4 @@
-;
-(function () {
+;(function (global) {
     function Countdown(delay) {
         this.delay = delay || 1000
         this.list = {}
@@ -120,5 +119,14 @@
         }
     }
 
-    window.Countdown = window.Countdown || Countdown;
-})();
+    
+    if (typeof module != 'undefined' && module.exports) {
+        module.exports = Countdown;
+    } else if (typeof define === 'function' && define.amd) {
+        define(function () {
+            return Countdown;
+        })
+    } else {
+        global.Countdown = global.Countdown || Countdown;
+    }
+})(window || this);
