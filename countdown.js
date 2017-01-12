@@ -1,61 +1,25 @@
-export default class Countdown {
-    constructor(delay) {
+;
+(function () {
+    function Countdown(delay) {
         this.delay = delay || 1000
         this.list = {}
         this.timer = null
-        this.tag = 'd' // d: 最大单位为天， h: 最大单位为时， m: 最大单位为分， s: 最大单位为秒
     }
-    on(name, endtime, cb, delta) {
-        this.list[name] = {
-            name: name,
-            endtime: endtime,
-            cb: cb,
-            delta: delta || 1,
-            times: 0
-        }
-        if (!this.timer) {
-            this.update()
-        }
-        return this
-    }
-    off(name) {
-        delete this.list[name]
-        return this
-    }
-    changeEnd (name, endtime) {
-        this.list[name].endtime = endtime;
-    }
-    update() {
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-            for (let key in this.list) {
-                let obj = this.list[key]
-                obj.times++;
-                if (obj.times % obj.delta == 0) {
-                    let diff = this.diffTime(obj.endtime);
-                    obj.cb.call(this, diff);
-                }
-            }
-            this.update();
-        }, this.delay);
-    }
-    _cover(num) {
+
+    var _cover = function (num) {
         var n = parseInt(num, 10);
         return n < 10 ? '0' + n : String(n);
     }
-    format(tag) {
-        this.tag = tag;
-        return this;
-    }
-    _formatTime(ms) {
-        let s = ms / 1000;
-        let tag = 4;
-        let ts = s,
+
+    var _formatTime = function (ms, name) {
+        var s = ms / 1000;
+        var tag = 4;
+        var ts = s,
             dd = 0,
             hh = 0,
             mm = 0,
             ss = 0;
-        switch (this.tag) {
+        switch (this.list[name].tag) {
             case 'd':
                 tag = 4;
                 break;
@@ -87,28 +51,74 @@ export default class Countdown {
             ss = parseInt(ts, 10); // 计算剩余的秒数
         }
         return {
-            d: this._cover(dd),
-            h: this._cover(hh),
-            m: this._cover(mm),
-            s: this._cover(ss),
+            d: _cover.call(this, dd),
+            h: _cover.call(this, hh),
+            m: _cover.call(this, mm),
+            s: _cover.call(this, ss),
             total: s
         };
     }
-    removeDD(diff) {
-        if (diff && diff.d !== '00') {
-            diff.h = this._cover((Number(diff.d) * 24) + Number(diff.h))
-            diff.d = '00'
+
+    Countdown.prototype.on = function (name, endtime, cb, delta) {
+        this.list[name] = {
+            name: name,
+            endtime: endtime,
+            cb: cb,
+            delta: delta || 1,
+            times: 0,
+            tag: 'd' // d: 最大单位为天， h: 最大单位为时， m: 最大单位为分， s: 最大单位为秒
         }
-        return diff
+        if (!this.timer) {
+            this.update();
+        }
+        return this;
     }
-    diffTime(target) {
-        let now = new Date().getTime();
+
+    Countdown.prototype.off = function (name) {
+        delete this.list[name];
+        return this;
+    }
+
+    Countdown.prototype.changeEnd = function (name, endtime) {
+        this.list[name].endtime = endtime;
+    }
+
+    Countdown.prototype.update = function () {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            for (var key in this.list) {
+                if (this.list.hasOwnProperty(key)) {
+                    var obj = this.list[key]
+                    obj.times++;
+                    if (obj.times % obj.delta == 0) {
+                        var diff = this.diffTime(obj.endtime, key);
+                        obj.cb.call(this, diff);
+                    }
+                }
+            }
+            this.update();
+        }, this.delay);
+    }
+
+    Countdown.prototype.format = function (name, tag) {
+        if (arguments.length === 1) {
+            this.list[Object.keys(this.list)[0]].tag = arguments[0];
+        } else {
+            this.list[name].tag = tag;
+        }
+        return this;
+    }
+
+    Countdown.prototype.diffTime = function (target, name) {
+        var now = new Date().getTime();
         if (now < target) {
-            let diff = target - now
-            let ret = this._formatTime(diff)
+            var diff = target - now
+            var ret = _formatTime.call(this, diff, name)
             return ret
         } else {
             return null
         }
     }
-}
+
+    window.Countdown = window.Countdown || Countdown;
+})();
