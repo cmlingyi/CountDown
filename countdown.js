@@ -5,11 +5,13 @@
         this.timer = null
     }
 
+    //时间格式化 小于10的单位在前面补一个0
     var _cover = function (num) {
         var n = parseInt(num, 10);
         return n < 10 ? '0' + n : String(n);
     }
 
+    //把毫秒时间转换成需要的时间单位
     var _formatTime = function (ms, name) {
         var s = ms / 1000;
         var tag = 4;
@@ -58,14 +60,22 @@
         };
     }
 
-    Countdown.prototype.on = function (name, endtime, cb, delta) {
+    /**
+     * 注册计时器
+     * name: [string] 标识
+     * endtime: [number] 时间终点
+     * cb: [function] 回调函数
+     * tag: [string] 计时器规格   d: 最大单位为天， h: 最大单位为时， m: 最大单位为分， s: 最大单位为秒
+     * delta: 触发间隔
+     */
+    Countdown.prototype.on = function (name, endtime, cb, tag, delta) {
         this.list[name] = {
             name: name,
             endtime: endtime,
             cb: cb,
-            delta: delta || 1,
+            delta: typeof delta === 'number' ? delta : 1,
+            tag: typeof tag === 'string' ? tag : 'd', // 
             times: 0,
-            tag: 'd' // d: 最大单位为天， h: 最大单位为时， m: 最大单位为分， s: 最大单位为秒
         }
         if (!this.timer) {
             this.update();

@@ -21,16 +21,13 @@
         })
         .on('time2', date, function (time) {
             document.getElementsByClassName('time_h')[0].textContent = time.d + ':' + time.h + ':' + time.m + ':' + time.s;
-        })
+        }, 'h')
         .on('time3', date, function (time) {
             document.getElementsByClassName('time_m')[0].textContent = time.d + ':' + time.h + ':' + time.m + ':' + time.s;
-        })
+        }, 'm')
         .on('time4', date, function (time) {
             document.getElementsByClassName('time_s')[0].textContent = time.d + ':' + time.h + ':' + time.m + ':' + time.s;
-        });
-        countDown.format('time2', 'h');
-        countDown.format('time3', 'm');
-        countDown.format('time4', 's');
+        }, 's');
     </script>
 </body>
 </html>
