@@ -1,0 +1,23 @@
+{
+  "name": "countdown",
+  "version": "0.2.0",
+  "description": "countdown format",
+  "main": "countdown.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmlingyi/CountDown.git"
+  },
+  "keywords": [
+    "countdown",
+    "timer"
+  ],
+  "author": "cocoChen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cmlingyi/CountDown/issues"
+  },
+  "homepage": "https://github.com/cmlingyi/CountDown#readme"
+}
