@@ -21,7 +21,7 @@ countdown.on('a', new Date().getTime() + 300000, function (time) {
 countdown.off('a');
 ```
 #### .format(name, tag)
-设置时间格式，'d'代表天，'h'代表时，'m'代表分， 's'代表秒，默认格式为 d:h:m:s.
+设置时间格式，'d'代表天，'h'代表时，'m'代表分， 's'代表秒，默认格式为 d : h : m : s.
 ```
 countdown.format('a', 'h');
 ```
